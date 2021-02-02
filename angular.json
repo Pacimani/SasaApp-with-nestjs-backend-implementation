@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "css"
+    }
+  },
+  "defaultProject": "sasa",
+  "projects": {
+    "sasa": {
+      "projectType": "application",
+      "root": "apps/sasa",
+      "sourceRoot": "apps/sasa/src",
+      "prefix": "sasa-web",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/sasa",
+            "index": "apps/sasa/src/index.html",
+            "main": "apps/sasa/src/main.ts",
+            "polyfills": "apps/sasa/src/polyfills.ts",
+            "tsConfig": "apps/sasa/tsconfig.app.json",
+            "aot": true,
+            "assets": ["apps/sasa/src/favicon.ico", "apps/sasa/src/assets"],
+            "styles": ["apps/sasa/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/sasa/src/environments/environment.ts",
+                  "with": "apps/sasa/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "sasa:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "sasa:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "sasa:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/sasa/src/**/*.ts",
+              "apps/sasa/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/sasa"],
+          "options": {
+            "jestConfig": "apps/sasa/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "sasa-e2e": {
+      "root": "apps/sasa-e2e",
+      "sourceRoot": "apps/sasa-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/sasa-e2e/cypress.json",
+            "tsConfig": "apps/sasa-e2e/tsconfig.e2e.json",
+            "devServerTarget": "sasa:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "sasa:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/sasa-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}
