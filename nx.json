@@ -17,6 +17,8 @@
   },
   "projects": {
     "sasa": { "tags": [] },
-    "sasa-e2e": { "tags": [], "implicitDependencies": ["sasa"] }
+    "sasa-e2e": { "tags": [], "implicitDependencies": ["sasa"] },
+    "api": { "tags": [] },
+    "data": { "tags": [] }
   }
 }

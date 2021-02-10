@@ -1,0 +1,57 @@
+<div class="nav-container">
+    <nav class="navbar">
+        <img (click)="changeRoute()" class="logo" src="../assets/logo.png" alt="image">
+        <a (click)="changeRoute()" class="navbar-brand" routerLink="/home">Home</a>
+        <a (click)="newBlogContents()" class="navbar-brand" routerLink="">Create new blog</a>
+    </nav>
+</div>
+
+<div class="page-container">
+    <div class="sidebar">
+        <div class="heading">
+            <h2>Current blogs: {{numberOfBlogs()}}</h2>
+            <hr>
+        </div>
+        <div class="sidebar flow">
+            <div class="list-items" *ngFor="let blogContent of getBlogContent()">
+                <div class="blog-element">
+                    <div class="list-item">
+                        <a (click)="changeRoute()" [routerLink]="['/display', blogContent.id]" routerLinkActive="selected">
+                            <i class="material-icons">arrow_forward_ios</i>{{blogContent.blog.title | titlecase}}
+                        </a>
+                    </div>
+                    <div class="example-button-container">
+                        <button class="delete" (click)="deleteBlog(blogContent.id)">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div *ngIf="routing; else addNew" #route class="container">
+    <router-outlet></router-outlet>
+</div>
+
+<ng-template #addNew>
+    <div class="container">
+        <div class="container">
+            <h1>Write a new blog</h1>
+        </div>
+        <div class="col-sm-6">
+            <form [formGroup]="blogForm" (ngSubmit)="submitData()">
+                <div class="form-group">
+                    <label>Blog Title</label>
+                    <input required class="form-control" minlength="3" formControlName="title">
+                </div>
+                <div class="form-group">
+                    <label for="newBlog">Write your story</label>
+                    <textarea required class="form-control blog-input" formControlName="message"></textarea>
+                </div>
+                <button class="btn-sbt btn-primary" [disabled]="blogForm.invalid">Create</button>
+            </form>
+            <button (click)="back()" class="btn btn-primary">Cancel</button>
+        </div>
+    </div>
+</ng-template>
+</div>
