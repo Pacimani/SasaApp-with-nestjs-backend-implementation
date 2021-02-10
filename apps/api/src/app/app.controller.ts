@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Headers, Put, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Headers, Put, Delete } from '@nestjs/common';
 import { BlogContent } from '@sasa-web/data';
 
 import { AppService } from './app.service';
@@ -15,26 +15,23 @@ export class AppController {
 
   @Get('getCurrentBlog')
   getCurrentBlog(@Headers() headers) {
-    console.warn('This are headers: ', headers.header);
     const id = Number(headers.header);
     return this.appService.getCurrentBlog(id);
-    //return this.appService.getCurrentBlog(id);
   }
 
   @Get('getNumBlog')
   getNumBlog(){
     return this.appService.getNumBlog();
   }
+
   @Put('updateBlogContent')
   async updateBlogContent(@Body() blogContent: BlogContent) {
-    console.warn('This is update blog ', blogContent, ' comments are ', blogContent.blog.comments );
-    // return;
-    // need to replace this with a update in the service
     return this.appService.updateBlogContent(blogContent);
   }
-  @Post('deleteBlog')
-  async deleteBlog(@Param('id') id: number) {
-    console.log('the id is ', id);
+
+  @Delete('deleteBlog')
+  async deleteBlog(@Headers() headers) {
+    const id = Number(headers.header);
     return this.appService.deleteBlog(id);
   }
 

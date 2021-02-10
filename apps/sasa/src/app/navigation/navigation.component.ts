@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Blog, BlogContent } from '@sasa-web/data';
@@ -110,7 +110,10 @@ export class NavigationComponent implements OnInit{
   }
 
   deleteBlog(id: number): void {
-    this.http.post('/api/deleteBlog', id).subscribe(() => {
+    const headers = new HttpHeaders().append('header', ''+id);
+    const params = new HttpParams().append('param', ''+id);
+  
+    this.http.delete('/api/deleteBlog', {headers, params}).subscribe(() => {
       this.blogContents = this.blogContents.filter(cB => cB.id !== id);
     });
   }
